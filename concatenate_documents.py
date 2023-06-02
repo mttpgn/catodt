@@ -8,7 +8,7 @@ from odf.style import Style, TextProperties
 import pypandoc
 
 
-def concatenate_documents(directory, output_file):
+def concatenateDocuments(directory, output_file):
     files = sorted(os.listdir(directory))
     all_doc = OpenDocumentText()
     odt_files_exist = False
@@ -25,7 +25,10 @@ def concatenate_documents(directory, output_file):
             # Concatenate ODT documents
             for paragraph in doc.getElementsByType(text.P):
                 para_text = teletype.extractText(paragraph)
-                new_paragraph = text.P(stylename=chapter_style if para_text.startswith("Chapter") else None, text=para_text)
+                new_paragraph = text.P(
+                    stylename=chapter_style if para_text.startswith("Chapter") else None,
+                    text=para_text
+                )
                 all_doc.text.addElement(new_paragraph)
                 odt_files_exist = True
     if not odt_files_exist:
@@ -46,7 +49,12 @@ def concatenate_documents(directory, output_file):
                     line = line.replace("<p>Chapter", "<h1>Chapter")
                     line = line.replace("</p>", "</h1>")
                 f.write(line)
-        pypandoc.convert_file(html_file, 'pdf', outputfile=output_file, extra_args=['--pdf-engine=xelatex'])
+        pypandoc.convert_file(
+            html_file,
+            'pdf',
+            outputfile=output_file,
+            extra_args=['--pdf-engine=xelatex'],
+        )
     return output_file
 
 
@@ -56,6 +64,5 @@ if __name__ == "__main__":
         sys.exit(1)
     directory = sys.argv[1]
     output_file = sys.argv[2]
-    output_file = concatenate_documents(directory, output_file)
+    output_file = concatenateDocuments(directory, output_file)
     print(f"Concatenated document saved as {output_file}")
-
