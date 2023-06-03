@@ -8,6 +8,20 @@ from odf.style import Style, TextProperties
 import pypandoc
 
 
+def cleanupIntermediaryFiles(output_file):
+    temp_file = output_file.replace('.pdf', '.odt') if output_file.endswith('.pdf') else output_file
+    md_file = temp_file.replace('.odt', '.md')
+    html_file = temp_file.replace('.odt', '.html')
+    cleanup_done = False
+    if os.path.exists(md_file):
+        os.remove(md_file)
+        cleanup_done = True
+    if os.path.exists(html_file):
+        os.remove(html_file)
+        cleanup_done = True
+    return cleanup_done
+
+
 def concatenateDocuments(directory, output_file):
     files = sorted(os.listdir(directory))
     all_doc = OpenDocumentText()
@@ -55,6 +69,7 @@ def concatenateDocuments(directory, output_file):
             outputfile=output_file,
             extra_args=['--pdf-engine=xelatex'],
         )
+    cleanupIntermediaryFiles(output_file)
     return output_file
 
 
