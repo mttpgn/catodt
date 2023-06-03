@@ -28,7 +28,7 @@ def concatenateDocuments(directory, output_file):
     odt_files_exist = False
     # Define a new style for Chapter headings
     chapter_style = Style(name="ChapterStyle", family="paragraph")
-    chapter_props = TextProperties(fontweight="bold", fontsize="36pt")
+    chapter_props = TextProperties(fontweight="bold", fontsize="28pt")
     chapter_style.addElement(chapter_props)
     # Add the style to the document's automatic styles
     all_doc.automaticstyles.addElement(chapter_style)
